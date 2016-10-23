@@ -1,0 +1,91 @@
+local createStore = require('src.createStore')
+local noop = function() end
+
+describe('createStore', function()
+
+  describe('error states', function()
+    it('causes an error if a function is not passed as the first argument', function()
+      expect(function()
+        createStore()
+      end).to.fail()
+    end)
+  end)
+
+  describe('behaviour', function()
+    it('returns a table when passed a function as the first argument', function()
+      local store = createStore(noop)
+
+      expect(type(store))
+        .to.be('table')
+    end)
+
+    it('returns a table when passed a function as the first argument and a table as the second argument', function()
+      local store = createStore(noop, {})
+
+      expect(type(store))
+        .to.be('table')
+    end)
+
+    it('sets the store state to be the initial state when specified through the second argument', function()
+      local initialState = {
+        a = '1'
+      }
+      local store = createStore(noop, initialState)
+      local storeState = store.getState()
+
+      expect(storeState)
+        .to.be(initialState)
+
+      expect(storeState.a)
+        .to.be(initialState.a)
+    end)
+  end)
+
+end)
+
+describe('store', function()
+
+  describe('properties', function()
+    it('has a dispatch property, which is a function', function()
+      local store = createStore(noop, {})
+
+      expect(type(store.dispatch))
+        .to.be('function')
+    end)
+
+    it('has a listen property, which is a function', function()
+      local store = createStore(noop, {})
+
+      expect(type(store.listen))
+        .to.be('function')
+    end)
+
+    it('has a getState property, which is a function', function()
+      local store = createStore(noop, {})
+
+      expect(type(store.getState))
+        .to.be('function')
+    end)
+  end)
+
+end)
+
+describe('store#dispatch', function()
+
+  describe('error states', function()
+    it('causes an error if a reducer tries to call dispatch', function()
+      local store = createStore(function()
+        store.dispatch({
+          actionType = 'test'
+        })
+      end)
+
+      expect(function()
+        store.dispatch({
+          actionType = 'test'
+        })
+      end).to.fail()
+    end)
+  end)
+
+end)
