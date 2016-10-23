@@ -29,5 +29,109 @@ describe('assign', function()
       end).to.fail()
     end)
   end)
-  
+
+  describe('return value', function()
+    it('returns the same table as originally passed for the first argument', function()
+      local tbl = {}
+      expect(assign(tbl))
+        .to.be(tbl)
+    end)
+  end)
+
+  describe('behaviour', function()
+    it('assigns all properties from the second argument table to the first argument table', function()
+      local destination = {}
+      local source = {
+        a = '1',
+        b = '2',
+        c = '3'
+      }
+
+      assign(destination, source)
+
+      expect(destination['a'])
+        .to.exist()
+      expect(destination['a'])
+        .to.be('1')
+
+      expect(destination['b'])
+        .to.exist()
+      expect(destination['b'])
+        .to.be('2')
+
+      expect(destination['c'])
+        .to.exist()
+      expect(destination['c'])
+        .to.be('3')
+    end)
+
+    it('assigns all properties from the second argument table to the first argument table and returns the first table as the result', function()
+      local destination = {}
+      local source = {
+        a = '1',
+        b = '2',
+        c = '3'
+      }
+
+      local result = assign(destination, source)
+
+      expect(result['a'])
+        .to.exist()
+      expect(result['a'])
+        .to.be('1')
+
+      expect(result['b'])
+        .to.exist()
+      expect(result['b'])
+        .to.be('2')
+
+      expect(result['c'])
+        .to.exist()
+      expect(result['c'])
+        .to.be('3')
+
+      expect(result)
+        .to.be(destination)
+    end)
+
+    it('also assigns resulting arguments to the destination', function()
+      local destination = {}
+      local sourceA = {
+        a = '1'
+      }
+      local sourceB = {
+        b = '2'
+      }
+
+      assign(destination, sourceA, sourceB)
+
+      expect(destination['a'])
+        .to.exist()
+      expect(destination['a'])
+        .to.be('1')
+
+      expect(destination['b'])
+        .to.exist()
+      expect(destination['b'])
+        .to.be('2')
+    end)
+
+    it('makes the assignment of multiple sources from left to right', function()
+      local destination = {}
+      local sourceA = {
+        a = '1'
+      }
+      local sourceB = {
+        a = '2'
+      }
+
+      assign(destination, sourceA, sourceB)
+
+      expect(destination['a'])
+        .to.exist()
+      expect(destination['a'])
+        .to.be('2')
+    end)
+  end)
+
 end)
