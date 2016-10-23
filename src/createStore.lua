@@ -24,6 +24,8 @@ function triggerListeners(listeners)
 end
 
 function createStore(reducer, intialState) 
+  assert(type(reducer) == 'function', 'reducer passed to #createStore must be of type function')
+
   local store = {}
   
   local isDispatching = false
