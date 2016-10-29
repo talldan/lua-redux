@@ -120,4 +120,44 @@ describe('store#dispatch', function()
       end).to.fail()
     end)
   end)
+
+  describe('behaviour', function()
+    it('calls the reducing function declared in createStore', function()
+      local calls = 0
+      local store = createStore(function()
+        calls = calls + 1
+      end)
+
+      store.dispatch({ actionType = 'test' })
+
+      expect(calls)
+        .to.be(1)
+    end)
+
+    it('calls the reducing function with the store state as the first argument, and the action as the second argument', function()
+      local initialState = {
+        testValue = 'this is a test'
+      }
+
+      local action = { 
+        actionType = 'test' 
+      }
+
+      local stateArg = nil
+      local actionArg = nil
+
+      local store = createStore(function(state, action)
+        stateArg = state
+        actionArg = action
+      end, initialState)
+
+      store.dispatch(action)
+
+      expect(stateArg)
+        .to.be(initialState)
+
+      expect(actionArg)
+        .to.be(action)
+    end)
+  end)
 end)
