@@ -4,7 +4,7 @@ function listen(listener, listeners)
 
   listeners[#listeners + 1] = listener
 
-  function unsubscribe()
+  function unlisten()
     local position;
     for index, listenerToCheck in ipairs(listeners) do
       if listener == listenerToCheck then
@@ -47,7 +47,7 @@ function createStore(reducer, intialState)
   end
 
   function store.listen(listener)
-    listen(listener, listeners)
+    return listen(listener, listeners)
   end
 
   function store.getState()
