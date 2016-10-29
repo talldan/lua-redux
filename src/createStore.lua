@@ -1,5 +1,4 @@
 function listen(listener, listeners)
-  local position = (#listeners + 1)
   listeners[#listeners + 1] = listener
 
   function unsubscribe()
