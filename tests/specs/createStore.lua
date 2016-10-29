@@ -266,6 +266,48 @@ describe('store#listen', function()
 
       expect(anotherListenerStateArg.updated)
         .to.be(true)
+    end) 
+
+    it('returns an unlisten function, which is used to unregister the listener', function()
+      local listenerCalls = 0
+      local listenerStateArg = nil
+
+      local initialState = {
+        updated = false
+      }
+
+      function listener(newState)
+        listenerCalls = listenerCalls + 1
+        listenerStateArg = newState
+      end
+
+      function reducer()
+        return {
+          updated = true
+        }
+      end
+
+      local store = createStore(reducer, initialState)
+      local unlisten = store.listen(listener)
+
+      expect(type(unlisten))
+        .to.be('function')
+
+      store.dispatch({ actionType = 'update' })
+      store.dispatch({ actionType = 'update' })
+
+      expect(listenerCalls)
+        .to.be(2)
+
+      expect(listenerStateArg.updated)
+        .to.be(true)
+
+      unlisten()
+      store.dispatch({ actionType = 'update' })
+      store.dispatch({ actionType = 'update' })
+
+      expect(listenerCalls)
+        .to.be(2)
     end)
   end)
 end)
