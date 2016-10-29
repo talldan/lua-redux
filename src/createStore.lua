@@ -19,9 +19,9 @@ function listen(listener, listeners)
   return unsubscribe
 end
 
-function triggerListeners(listeners)
+function triggerListeners(listeners, storeState)
   for index, listener in ipairs(listeners) do
-    listener()
+    listener(storeState)
   end
 end
 
@@ -43,7 +43,7 @@ function createStore(reducer, intialState)
     storeState = reducer(storeState, action)
     isDispatching = false
 
-    triggerListeners(listeners)
+    triggerListeners(listeners, storeState)
   end
 
   function store.listen(listener)
