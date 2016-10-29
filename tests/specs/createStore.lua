@@ -2,7 +2,6 @@ local createStore = require('src.createStore')
 local noop = function() end
 
 describe('createStore', function()
-
   describe('error states', function()
     it('causes an error if a function is not passed as the first argument', function()
       expect(function()
@@ -40,11 +39,9 @@ describe('createStore', function()
         .to.be(initialState.a)
     end)
   end)
-
 end)
 
 describe('store', function()
-
   describe('properties', function()
     it('has a dispatch property, which is a function', function()
       local store = createStore(noop, {})
@@ -67,12 +64,48 @@ describe('store', function()
         .to.be('function')
     end)
   end)
-
 end)
 
 describe('store#dispatch', function()
-
   describe('error states', function()
+    it('causes an error if dispatch is not passed a table as a first argument', function()
+      local store = createStore(noop)
+
+      expect(function()
+        store.dispatch()
+      end).to.fail()
+    end)
+
+    it('causes an error if the first argument table does not have an actionType property', function()
+      local store = createStore(noop)
+
+      expect(function()
+        store.dispatch({})
+      end).to.fail()
+    end)
+
+    it('causes an error if the first argument table has an actionType property that is not a string', function()
+      local store = createStore(noop)
+
+      expect(function()
+        store.dispatch({
+          actionType = 12
+        })
+      end).to.fail()
+
+      expect(function()
+        store.dispatch({
+          actionType = {}
+        })
+      end).to.fail()
+
+      expect(function()
+        store.dispatch({
+          actionType = false  
+        })
+      end).to.fail()
+    end)
+
     it('causes an error if a reducer tries to call dispatch', function()
       local store = createStore(function()
         store.dispatch({
@@ -87,5 +120,4 @@ describe('store#dispatch', function()
       end).to.fail()
     end)
   end)
-
 end)
