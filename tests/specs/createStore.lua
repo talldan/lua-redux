@@ -159,5 +159,99 @@ describe('store#dispatch', function()
       expect(actionArg)
         .to.be(action)
     end)
+
+    it('causes the store state to be updated to the value returned by the reducer', function()
+      local initialState = {
+        testValue = 'this is the initial state'
+      }
+
+      local store = createStore(function()
+        return {
+          testValue = 'this is the new state'
+        }
+      end, initialState)
+
+      store.dispatch({
+        actionType = 'update'  
+      })
+
+      expect(store.getState())
+        .to_not.be(initialState)
+
+      expect(store.getState().testValue)
+        .to.be('this is the new state')
+    end)
+  end)
+end)
+
+describe('store#getState', function()
+  describe('behaviour', function()
+    it('returns the current store state', function()
+      local initialState = {
+        testValue = 'this is the initial state'
+      }
+
+      local store = createStore(noop, initialState)
+
+      expect(store.getState())
+        .to.be(initialState)
+    end)
+  end)
+end)
+
+describe('store#listen', function()
+  describe('error states', function()
+    it('causes an error if a function is not passed as the first argument', function()
+      local store = createStore(noop)
+
+      expect(function()
+        store.listen()
+      end).to.fail()
+
+      expect(function()
+        store.listen(false)
+      end).to.fail()
+
+      expect(function()
+        store.listen('hi')
+      end).to.fail()
+
+      expect(function()
+        store.listen(12)
+      end).to.fail()
+    end)
+  end)
+
+  describe('behaviour', function()
+    it('registers a function as a listener, which is triggered when the store is updated, and receives the new store state as an argument', function()
+      local calls = 0
+      local stateArg = nil
+
+      local initialState = {
+        updated = false
+      }
+
+      function listener(newState)
+        calls = calls + 1
+        stateArg = newState
+      end
+
+      function reducer()
+        return {
+          updated = true
+        }
+      end
+
+      local store = createStore(reducer, initialState)
+      store.listen(listener)
+
+      store.dispatch({ actionType = 'update' })
+
+      expect(calls)
+        .to.be(1)
+
+      expect(stateArg.updated)
+        .to.be(true)
+    end)
   end)
 end)
