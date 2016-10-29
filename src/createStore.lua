@@ -1,4 +1,7 @@
 function listen(listener, listeners)
+  assert(type(listener) == 'function', 'Listener passed to listen must be of type function')
+  assert(type(listeners) == 'table', 'Listeners passed to listen must be of type table')
+
   listeners[#listeners + 1] = listener
 
   function unsubscribe()
@@ -32,9 +35,9 @@ function createStore(reducer, intialState)
   local storeState = intialState or {}
 
   function store.dispatch(action)
-    assert(type(action) == "table", "Action passed to dispatch must be of type table")
-    assert(type(action.actionType) == "string", "Action must have a type of string")
-    assert(not isDispatching, "Reducers must not call dispatch")
+    assert(type(action) == 'table', 'Action passed to dispatch must be of type table')
+    assert(type(action.actionType) == 'string', 'Action must have a type of string')
+    assert(not isDispatching, 'Reducers must not call dispatch')
 
     isDispatching = true
     storeState = reducer(storeState, action)
