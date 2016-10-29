@@ -224,16 +224,23 @@ describe('store#listen', function()
 
   describe('behaviour', function()
     it('registers a function as a listener, which is triggered when the store is updated, and receives the new store state as an argument', function()
-      local calls = 0
-      local stateArg = nil
+      local listenerCalls = 0
+      local listenerStateArg = nil
+      local anotherListenerCalls = 0
+      local anotherListenerStateArg = nil
 
       local initialState = {
         updated = false
       }
 
       function listener(newState)
-        calls = calls + 1
-        stateArg = newState
+        listenerCalls = listenerCalls + 1
+        listenerStateArg = newState
+      end
+
+      function anotherListener(newState)
+        anotherListenerCalls = anotherListenerCalls + 1
+        anotherListenerStateArg = newState
       end
 
       function reducer()
@@ -244,13 +251,20 @@ describe('store#listen', function()
 
       local store = createStore(reducer, initialState)
       store.listen(listener)
+      store.listen(anotherListener)
 
       store.dispatch({ actionType = 'update' })
 
-      expect(calls)
+      expect(listenerCalls)
         .to.be(1)
 
-      expect(stateArg.updated)
+      expect(listenerStateArg.updated)
+        .to.be(true)
+
+      expect(anotherListenerCalls)
+        .to.be(1)
+
+      expect(anotherListenerStateArg.updated)
         .to.be(true)
     end)
   end)
