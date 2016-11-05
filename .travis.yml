@@ -15,4 +15,4 @@ branches:
 script:
   - lua5.1 tests/runner.lua
   - lua5.2 tests/runner.lua
-  - luajit tests/runner.lua
+  - luajit-2.0.0-beta9 tests/runner.lua
