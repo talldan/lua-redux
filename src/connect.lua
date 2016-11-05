@@ -6,6 +6,8 @@ function connect(mapStateToProps, mapDispatchToProps)
       'connect expects its inner function to receive a function as an argument')
 
     function render(props, children, key)
+      assert(type(props) == 'table', 
+        'Props should be passed to a connect component')
       assert(type(props.store) == 'table',
         'Store should be passed as a prop to connect component')
 
