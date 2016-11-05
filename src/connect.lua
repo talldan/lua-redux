@@ -1,9 +1,13 @@
-local assign = require('assign')
+local assign = require('src.assign')
 
 function connect(mapStateToProps, mapDispatchToProps)
   return function(componentToWrap)
+    assert(type(componentToWrap) == 'function', 
+      'connect expects its inner function to receive a function as an argument')
+
     function render(props, children, key)
-      assert(type(props.store) == 'table', 'Store should be passed as a prop to connect component')
+      assert(type(props.store) == 'table',
+        'Store should be passed as a prop to connect component')
 
       local store = props.store
       local storeState = store.getState()
