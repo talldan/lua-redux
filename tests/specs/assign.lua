@@ -1,7 +1,6 @@
 local assign = require('src.assign')
 
 describe('assign', function()
-
   describe('error states', function()
     it('causes an error if passed no arguments', function()
       expect(function()
@@ -133,5 +132,4 @@ describe('assign', function()
         .to.be('2')
     end)
   end)
-
 end)
