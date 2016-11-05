@@ -4,7 +4,7 @@ function listen(listener, listeners)
 
   listeners[#listeners + 1] = listener
 
-  function unlisten()
+  return function()
     local position;
     for index, listenerToCheck in ipairs(listeners) do
       if listener == listenerToCheck then
@@ -15,8 +15,6 @@ function listen(listener, listeners)
 
     table.remove(listeners, position)
   end
-
-  return unsubscribe
 end
 
 function triggerListeners(listeners, storeState)
