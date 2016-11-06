@@ -1,6 +1,6 @@
 local connect = require('src.connect')
 
-function createStoreMock(storeState)
+local function createStoreMock(storeState)
   local storeMock = {
     getState = function()
       return storeState
