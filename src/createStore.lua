@@ -1,4 +1,4 @@
-function listen(listener, listeners)
+local function listen(listener, listeners)
   assert(type(listener) == 'function', 'Listener passed to listen must be of type function')
   assert(type(listeners) == 'table', 'Listeners passed to listen must be of type table')
 
@@ -17,13 +17,13 @@ function listen(listener, listeners)
   end
 end
 
-function triggerListeners(listeners, storeState)
+local function triggerListeners(listeners, storeState)
   for index, listener in ipairs(listeners) do
     listener(storeState)
   end
 end
 
-function createStore(reducer, intialState) 
+local function createStore(reducer, intialState) 
   assert(type(reducer) == 'function', 'reducer passed to #createStore must be of type function')
 
   local store = {}

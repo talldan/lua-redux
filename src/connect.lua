@@ -1,6 +1,7 @@
-local assign = require('src.assign')
+local path = (...):gsub("%.connect$","")
+local assign = require(path .. '.assign')
 
-function connect(mapStateToProps, mapDispatchToProps)
+local function connect(mapStateToProps, mapDispatchToProps)
   return function(componentToWrap)
     assert(type(componentToWrap) == 'function', 
       'connect expects its inner function to receive a function as an argument')
