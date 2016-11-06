@@ -93,3 +93,48 @@ store.getState returns the state of the store:
 local storeState = store.getState()
 print(storeState.counter)  -- prints 2
 ```
+
+### connect
+
+Use connect to connect some kind of component (tbc) to the store. Connect
+receives a couple of mapping functions for store state and store actions and
+returns a higher order function used to wrap another function.
+
+```
+local connect = require('redux.connect')
+
+local function mapStateToProps(state) {
+  return {
+    value = state.counter
+  }
+}
+
+local function mapDispatchToProps(dispatch) {
+  return {
+    incrementByOne = function()
+      dispatch({
+        actionType = 'INCREMENT',
+        value = 1
+      })
+    end,
+    decrementByOne = function()
+      dispatch({
+        actionType = 'DECREMENT',
+        value = 1  
+      })
+    end
+  }
+}
+
+local connector = connect(mapStateToProps, mapDispatchToProps)
+
+local connected = connector(function(props)
+  return component({
+    onClickUpButton = props.incrementByOne,
+    onClickDownButton = props.decrementByOne,
+    value = props.value
+  })
+end)
+
+connected({ store = store })
+```
