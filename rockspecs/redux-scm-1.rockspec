@@ -1,7 +1,7 @@
 package = "redux"
 version = "scm-1"
 source = {
-  url = "https://github.com/talldan/lua-redux.git"
+  url = "git://github.com/talldan/lua-redux.git"
 }
 description = {
   summary = "Implementation of the JavaScript redux library in Lua",
@@ -17,8 +17,8 @@ dependencies = {
 build = {
   type = "builtin",
   modules = {
-    ["redux.init"] = "src/init.lua",
     ["redux.connect"] = "src/connect.lua",
+    ["redux.assign"] = "src/assign.lua",
     ["redux.createStore"] = "src/createStore.lua"
   }
 }
