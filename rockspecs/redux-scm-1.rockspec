@@ -19,6 +19,7 @@ build = {
   modules = {
     ["redux.connect"] = "src/connect.lua",
     ["redux.assign"] = "src/assign.lua",
-    ["redux.createStore"] = "src/createStore.lua"
+    ["redux.createStore"] = "src/createStore.lua",
+    ["redux.init"] = "src/init.lua"
   }
 }
