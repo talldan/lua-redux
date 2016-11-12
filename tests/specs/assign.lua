@@ -29,15 +29,13 @@ describe('assign', function()
     end)
   end)
 
-  describe('return value', function()
+  describe('behaviour', function()
     it('returns the same table as originally passed for the first argument', function()
       local tbl = {}
       expect(assign(tbl))
         .to.be(tbl)
     end)
-  end)
 
-  describe('behaviour', function()
     it('assigns all properties from the second argument table to the first argument table', function()
       local destination = {}
       local source = {
@@ -130,6 +128,23 @@ describe('assign', function()
         .to.exist()
       expect(destination['a'])
         .to.be('2')
+    end)
+
+    it('clones properties from source tables when assigning them to the destination', function()
+      local destination = {}
+
+      local source = {
+        test = {
+          value = 0
+        }
+      }
+
+      assign(destination, source)
+
+      source.test.value = 1
+
+      expect(destination.test.value)
+        .to.be(0)
     end)
   end)
 end)

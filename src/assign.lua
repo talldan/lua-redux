@@ -1,8 +1,25 @@
+function clone(rootElement)
+  local elementType = type(rootElement)
+  local copy
+
+  if elementType == 'table' then
+    copy = {}
+    for elementKey, elementValue in next, rootElement, nil do
+      copy[clone(elementKey)] = clone(elementValue)
+    end
+    setmetatable(copy, clone(getmetatable(rootElement)))
+  else
+    copy = rootElement
+  end
+
+  return copy
+end
+
 local function assignOne(destination, source)
   assert(type(source) == "table", "Assign must be called with a table or nil as a successive argument. Type was " .. type(source))
 
   for key, value in pairs(source) do
-    destination[key] = value
+    destination[key] = clone(value)
   end 
 
   return destination
