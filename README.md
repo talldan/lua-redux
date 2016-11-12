@@ -11,7 +11,7 @@ lua-redux is currently in early stages of development, and doesn't contain the s
 lua-redux is installable using LuaRocks (https://luarocks.org/modules/talldan/redux):
 
 ```
-luarocks install --server=http://luarocks.org/dev redux
+luarocks install redux
 ```
 
 Alternatively, it should be possible to use other approaches, like a git submodule.
